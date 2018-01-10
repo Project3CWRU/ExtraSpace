@@ -1,0 +1,282 @@
+
+<div class="container-fluid">
+     <div id="searchContainer"> 
+          <div>
+          <!--<div class="col-md-12">-->
+               <form action="/spaces/search/" method="GET" class="form-inline">
+                    <input type="text" name="city" placeholder="Enter a City" class="form-control inputBox">
+                    <button class="btn btn-primary searchButton" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                    <a class="btn btn-primary advancedSearchButton" href="#" data-toggle="modal" data-target="#searchModal"><span class="glyphicon glyphicon-search"></span> Advanced</a>
+               </form>
+
+          </div>
+          <!--</div>-->
+     </div>
+</div>
+
+<div class="container-fluid results">
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4" id="searchList">
+			{{#if user}}
+				{{#each user.space}}
+					<div class="searchResult">
+						<img src="{{this.photo}}" height="200px" width="200px" class="spacePic">
+						<p class="spaceDescrip"><span class="desTitle">Type: </span> {{this.type}}</p>
+						<p class="spaceDescrip"><span class="desTitle">Cost: </span>${{this.price}} / month</p>
+						<p class="spaceDescrip"><span class="desTitle">Address: </span>{{this.address}}</p>
+						<p class="spaceDescrip"><span class="desTitle">City: </span>{{this.city}}, {{this.state}}</p>
+						<p class="spaceDescrip"><span class="desTitle">Zip: </span>{{this.zipcode}}</p>
+						<p class="spaceDescrip"><span class="desTitle">Available From: </span> {{this.from}}</p>
+                        <p class="spaceDescrip"><span class="desTitle">Available Until: </span> {{this.to}}</p>
+                        </span><a href="/space/{{this.id}}">More Details</a></p>
+					</div>
+				{{/each}}
+			{{else}}
+				{{#each space}}
+					<div class="searchResult result">
+						<img src="{{this.photo}}" height="200px" width="200px" class="spacePic">
+                              <p class="spaceDescrip"><span class="desTitle">Type: </span> {{this.type}}</p>
+                              <p class="spaceDescrip"><span class="desTitle">Cost: </span>${{this.price}} / month</p>
+                              <p class="spaceDescrip"><span class="desTitle">Address: </span>{{this.address}}</p>
+                              <p class="spaceDescrip"><span class="desTitle">City: </span>{{this.city}}, {{this.state}}</p>
+                              <p class="spaceDescrip"><span class="desTitle">Zip: </span>{{this.zipcode}}</p>
+                              <p class="spaceDescrip"><span class="desTitle">Available From: </span> {{this.from}}</p>
+                              <p class="spaceDescrip"><span class="desTitle">Available Until: </span> {{this.to}}</p>
+                              </span><a href="/space/{{this.id}}">More Details</a></p>
+						<!--<h5>{{this.type}}</h5>
+						<h5>{{this.type}}</h5>
+						<h5>${{this.price}} / month</h5>
+						<h5>{{this.description}}</h5>
+						<a href="/space/{{this.id}}"> <h5>Address: {{this.address}}</h5></a>
+						<h5>{{this.city}}, {{this.state}}</h5>
+						<h5>{{this.zipcode}}</h5>
+						<h5>Available from <strong>{{this.from}}</strong> until <strong>{{this.to}}</strong></h5>-->
+					</div>
+				{{/each}}
+			{{/if}}
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 gmap">
+			<div class="form-style-8" id="map"></div>
+		</div>
+
+	</div>
+</div>
+
+<!-- Modal -->
+<div id="searchModal" class="modal fade searchPageModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+<!-- Modal content-->
+   <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Advanced Search</h4>
+      </div>
+      <div class="modal-body">
+           <form action="/spaces/search/" method="GET" class="form-inline">
+                <input type="text" name="city" placeholder="Enter a City" class="form-control inputBox">
+                <input type="text" name="zipcode" placeholder="Enter a Zipcode" class="form-control inputBox">
+                <select name="type" class="form-control inputBox">
+                	<option selected disabled>Select a Type</option>
+                	<option>Attic</option>
+                    <option>Backyard</option>
+                    <option>Basement</option>
+                    <option>Barn</option>
+                    <option>Boat Dock</option>
+                    <option>Car Port</option>
+                    <option>Closet</option>
+                    <option>Farm</option>
+                    <option>Garage</option>
+                    <option>Parking Space</option> 
+                    <option>Pavillion</option>
+                    <option>Shed</option> 
+                    <option>Warehouse</option>
+                    <option>Other</option>
+                </select>
+                <select name="limit" class="form-control inputBox">
+                	<option selected disabled># of Results</option>
+                	<option>10</option>
+                	<option>20</option>
+                	<option>50</option>
+                </select>
+                <button class="btn btn-primary searchButton" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+           </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+   </div>
+  </div>
+</div>
+<!-- End Modal -->
+
+<script type="text/javascript">
+var map;
+var geocoder;
+
+function createMap(lat, lng){
+	if(lat == undefined || lng == undefined){
+		lat = 41.4993;
+		lng = 81.6944;
+	}
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: lat, lng: lng},
+		zoom: 11
+	});
+
+	geocoder = new google.maps.Geocoder();
+
+	{{#if user}}
+		{{#each user.space}}
+			var address = "{{this.address}}";
+			var origin = new google.maps.LatLng(lat, lng);
+			var service = new google.maps.DistanceMatrixService();
+
+			service.getDistanceMatrix(
+				{
+					origins: [origin],
+					destinations: [address],
+					travelMode: 'DRIVING',
+					unitSystem: google.maps.UnitSystem.IMPERIAL
+				}, function callback(response, status){
+
+				if(response.rows[0].elements[0].status == 'OK'){
+					var distance = response.rows[0].elements[0].distance.text;
+				}
+				else{
+					var distance = "Unknown distance";
+				}
+
+				geocoder.geocode({'address': response.destinationAddresses[0]}, function(results, status){
+					if(status == 'OK'){
+						var markerInfo = '<div class="markerInfo" style="width: 200px, height:200px">' +
+						'{{this.type}}<br>{{this.address}}<br>${{this.price}} / month' +
+						'<br>' + distance + ' away<br><a href="/space/{{this.id}}">Details</a>';
+
+
+						var infoWindow = new google.maps.InfoWindow({
+							content: markerInfo
+						});
+
+						var markerTitle = "{{this.type}}";
+
+						var label = "{{this.type}}"[0];
+
+						var marker = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location,
+							label: label,
+							title: markerTitle
+						});
+
+						marker.addListener('click', function(){
+							infoWindow.open(map, marker);
+						});
+					}
+				});
+			});
+		{{/each}}
+	{{else}}
+		{{#each space}}
+			var address = "{{this.address}}";
+			var origin = new google.maps.LatLng(lat, lng);
+			var service = new google.maps.DistanceMatrixService();
+
+			service.getDistanceMatrix(
+				{
+					origins: [origin],
+					destinations: [address],
+					travelMode: 'DRIVING',
+					unitSystem: google.maps.UnitSystem.IMPERIAL
+				}, function callback(response, status){
+
+				if(response.rows[0].elements[0].status == 'OK'){
+					var distance = response.rows[0].elements[0].distance.text;
+				}
+				else{
+					var distance = "Unknown distance";
+				}
+
+				geocoder.geocode({'address': response.destinationAddresses[0]}, function(results, status){
+					if(status == 'OK'){
+						var markerInfo = '<div class="markerInfo" style="width: 200px, height:200px">' +
+						'{{this.type}}<br>{{this.address}}<br>${{this.price}} / month' +
+						'<br>' + distance + '<br><a href="/space/{{this.id}}">Details</a>';
+
+
+						var infoWindow = new google.maps.InfoWindow({
+							content: markerInfo
+						});
+
+						var markerTitle = "{{this.type}}";
+
+						var label = "{{this.type}}"[0];
+
+						var marker = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location,
+							label: label,
+							title: markerTitle
+						});
+
+						marker.addListener('click', function(){
+							infoWindow.open(map, marker);
+						});
+					}
+				});
+			});
+		{{/each}}
+	{{/if}}
+}
+
+function initMap(){
+
+	var thisURL = window.location.href;
+	var searchList = thisURL.split('/');
+	searchList = searchList[searchList.length - 1].split('&');
+	var searchTerm = '';
+	for(var i = 0; i < searchList.length; i++){
+		if(searchList[i].split('=')[0] == '?city' || searchList[i].split('=')[0] == 'zipcode'){
+			searchTerm += searchList[i].split('=')[1] + ' ';
+		}
+	}
+
+	var defaultLat;
+	var defaultLng;
+
+	var geoSuccess = function(position){
+		defaultLat = position.coords.latitude;
+		defaultLng = position.coords.longitude;
+		createMap(defaultLat, defaultLng);
+	};
+
+	var geoError = function(error){
+		console.log("Error occurred. Error code: " + error.code);
+		createMap(41.4993, -81.6944);
+	};
+
+	var blankTerm = true;
+
+	for(var i = 0; i < searchTerm.length; i++){
+		if(searchTerm[i] != ' '){
+			blankTerm = false;
+		}
+	}
+
+	if(blankTerm){
+		navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+	}
+	else{
+		var geocoder = new google.maps.Geocoder();
+
+		geocoder.geocode({'address': searchTerm.toString()}, function(results, status){
+			defaultLat = results[0].geometry.location.lat();
+			defaultLng = results[0].geometry.location.lng();
+			createMap(defaultLat, defaultLng);
+		});	
+	}
+
+}
+
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAOCKzruXFCLLp-DaX0-VmCjSXuN8_EkQ&callback=initMap"></script>

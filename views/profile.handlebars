@@ -1,0 +1,207 @@
+
+{{> alerts}}
+<div class="container containerTopProfile">
+     <div class="row">
+     <div class="col-xs-12 col-md-6 form-style-top-div">
+          <img src="{{user.pic}}" height="75px" width="75px" class="profileImage">
+          <h1 class="profileName">{{user.firstName}} {{user.lastName}} 
+     </div>
+     <div class="col-xs-12 col-md-6 form-add-top-div">
+          <a class="btn-lg btn-primary text-center modalButton" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i> Add Space</a></h1>
+       </div>
+     </div>
+     <div class="col-xs-hidden col-md-6">
+     </div>
+     </div>
+</div>
+<div class="container">
+     <div class="row">
+     <div class="col-xs-12 col-md-12">
+          <h3 class="profileLeftTitle">Your Listed Spaces</h3>
+          {{#each user.space}}
+               <div class="well form-style-8">
+                    {{#if this.space_status}}
+                      <h1 class="text-success">Available for Rent</h1>
+                    {{else}}
+                      <h1 class="text-danger owner">Booked by {{this.space_renterFirst}}</h1>
+                      <h3 class="owner-email">email: <a href="mailto:{{this.space_renterEmail}}">{{this.space_renterEmail}}</a></h3>
+                    {{/if}}
+                    <div class="row">
+                      <div class="col-md-6">
+                        <img src="{{this.space_photo}}" height="350px" width="350px" class="spaceImageProfile">
+                      </div>
+                      <div class="col-md-6">
+                        <p class="profileDescrip"><span class="desTitle">Type: </span>{{this.space_type}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Address: </span>{{this.space_address}}</p>
+                        <p class="profileDescrip"><span class="desTitle">City: </span>{{this.space_city}}</p>
+                        <p class="profileDescrip"><span class="desTitle">State: </span>{{this.space_state}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Zip: </span>{{this.space_zipcode}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Description: </span>{{this.space_description}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Monthly Price: </span>${{this.space_price}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Available From: </span>{{this.space_from}}</p>
+                        <p class="profileDescrip"><span class="desTitle">Available Until: </span>{{this.space_to}}</p>
+                        <p class="profileDescrip"></span><a href="space/{{this.space_id}}">View More Details Page</a></p>
+                        <button class="btn btn-info btn-md editButton" type="submit" data-toggle="modal" data-target="#{{this.space_id}}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                        <form action="spaces/delete/{{this.space_id}}?_method=DELETE" method="POST">
+                          <button class="btn btn-danger btn-md deleteButton" type="submit"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                        </form>
+                      </div>
+                    </div>
+               </div>
+                <div id="{{this.space_id}}" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                
+        <!-- Modal content-->
+        
+                   <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Edit your space below.</h4>
+                      </div>
+                      <div class="modal-body">
+                           <form class="form form-style-8" action="spaces/edit/{{this.space_id}}?_method=PUT" method="POST">
+                              <div class="form-group">
+                              <label><h4>Type</h4></label>
+                              <select name="type" class="form-control" value="{{this.space_type}}">
+                                <option>Attic</option>
+                                <option>Backyard</option>
+                                <option>Basement</option>
+                                <option>Barn</option>
+                                <option>Boat Dock</option>
+                                <option>Car Port</option>
+                                <option>Closet</option>
+                                <option>Farm</option>
+                                <option>Garage</option>
+                                <option>Parking Space</option> 
+                                <option>Pavillion</option>
+                                <option>Shed</option> 
+                                <option>Warehouse</option>
+                                <option>Other</option>
+                              </select>
+                            </div>
+                             <div class="form-group">
+                               <label><h4>Address</h4></label>
+                               <input type="text" name="address" class="form-control" value="{{this.space_address}}" required>
+                             </div>
+                             <div class="form-group">
+                              <label><h4>City</h4></label>
+                              <input type="text" name="city" class="form-control" value="{{this.space_city}}" required>
+                            </div>
+                             <div class="form-group">
+                              <label><h4>State</h4></label>
+                              <input type="text" name="state" class="form-control" value="{{this.space_state}}" required>
+                            </div>
+                             <div class="form-group">
+                              <label><h4>Zipcode</h4></label>
+                              <input type="text" name="zipcode" class="form-control" value="{{this.space_zipcode}}" required>
+                            </div>
+                             <div class="form-group">
+                               <label><h4>Description</h4></label>
+                               <textarea name="description" class="form-control" rows="8" maxlength="175">{{this.space_description}}</textarea>
+                             </div>
+                             <div class="form-group">
+                              <label><h4>Monthly Price</h4></label>
+                              <input name="price" class="form-control" type="number" value="{{this.space_price}}" required>
+                             </div>
+                             <div class="form-group">
+                              <label><h4>FROM</h4></label>
+                              <input name="from" class="form-control" type="date" value="{{this.space_from}}" required>
+                             </div>
+                             <div class="form-group">
+                              <label><h4>TO</h4></label>
+                              <input name="to" class="form-control" type="date" value="{{this.space_to}}" required>
+                             </div>
+                             <div class="form-group">
+                              <label><h4>Picture</h4></label>
+                              <input name="photo" class="form-control" type="url" value="{{this.space_photo}}">
+                             </div>
+                             <button class="btn btn-Primary addSpaceButton" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> Edit Space</button>
+                           </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                   </div>
+                  </div>
+                </div>
+          {{/each}}
+     </div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+<!-- Modal content-->
+   <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title text-center">List your available space below.</h3>
+        <h5 class="modal-title text-center">All fields are required.</h5>
+      </div>
+      <div class="modal-body">
+           <form class="form form-style-8" action="spaces/create" method="POST">
+             <div class="form-group">
+              <label><h4>Type (please choose which type of storage you will be listing for rent)</h4></label>
+              <select name="type" class="form-control">
+                <option>Attic</option>
+                <option>Backyard</option>
+                <option>Basement</option>
+                <option>Barn</option>
+                <option>Boat Dock</option>
+                <option>Car Port</option>
+                <option>Closet</option>
+                <option>Farm</option>
+                <option>Garage</option>
+                <option>Parking Space</option> 
+                <option>Pavillion</option>
+                <option>Shed</option> 
+                <option>Warehouse</option>
+                <option>Other</option>
+              </select>
+            </div>
+             <div class="form-group">
+               <label><h4>Address (ex. 405 Smith Ave.)</h4></label>
+               <input type="text" name="address" class="form-control" required>
+             </div>
+             <div class="form-group">
+             	<label><h4>City (ex. Cleveland)</h4></label>
+             	<input type="text" name="city" class="form-control" required>
+           	</div>
+             <div class="form-group">
+             	<label><h4>State (ex. OH)</h4></label>
+             	<input type="text" name="state" class="form-control" required>
+           	</div>
+             <div class="form-group">
+             	<label><h4>Zipcode (ex. 44195)</h4></label>
+             	<input type="text" name="zipcode" class="form-control" required>
+           	</div>         	
+             <div class="form-group">
+               <label><h4>Description (please provide a detailed description of your storage area, max 200 characters)</h4></label>
+               <textarea name="description" class="form-control" rows="8" placeholder="20x40 heated attic" maxlength="200"></textarea>
+             </div>
+             <div class="form-group">
+             	<label><h4>Monthly Rental Price</h4></label>
+             	<input name="price" class="form-control" type="number" required>
+             </div>
+             <div class="form-group">
+             	<label><h4>Space is Available for Rent Starting On</h4></label>
+             	<input name="from" class="form-control" type="date" required>
+             </div>
+             <div class="form-group">
+             	<label><h4>Space Rental Ends On</h4></label>
+             	<input name="to" class="form-control" type="date" required>
+             </div>
+             <div class="form-group">
+             	<label><h4>Picture (ex. http://www.getspace.com/image/dock.jpg)</h4></label>
+             	<input name="photo" class="form-control" placeholder="Place URL here" type="url">
+             </div>
+             <button class="btn btn-primary addSpaceButton" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> Add Space</button>
+           </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+   </div>
+  </div>
+</div>
+<!-- End Modal -->

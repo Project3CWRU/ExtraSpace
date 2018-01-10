@@ -1,0 +1,35 @@
+{
+  "name": "getspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sibi1414/getspace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sibi1414/getspace/issues"
+  },
+  "homepage": "https://github.com/sibi1414/getspace#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.3",
+    "handlebars": "^4.0.11",
+    "method-override": "^2.3.10",
+    "mysql": "^2.15.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-local": "^1.0.0",
+    "sequelize": "^3.31.1",
+    "sequelize-cli": "^3.2.0"
+  }
+}
