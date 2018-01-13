@@ -18,7 +18,7 @@
               <h2><span class="desTitle"> Rental Price: </span>${{user.space.price}} / month</h2>
               <h2><span class="desTitle"> Date Rental Available: </span>{{user.space.from}}</h2>
               <h2><span class="desTitle">Date Rental Ends: </span>{{user.space.to}}</h2>
-              <h2><span class="desTitle">Contact Owner: </span>{{user.email}}</h2>
+              
           {{#if user.space.status}}
                   <form action="/transactions/{{user.space.id}}?_method=PUT" method="POST" class="contact">
                        <button class="btn btn-primary addSpaceButton" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> Rent Space</button>
