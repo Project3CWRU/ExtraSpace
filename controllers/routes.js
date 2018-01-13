@@ -1,5 +1,7 @@
 var express = require('express');
 var db = require('../models');
+const path = require('path');
+const nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
@@ -14,6 +16,38 @@ module.exports = function(app, passport) {
 				user.addSpace(space);
 			}).then(function() {
 				req.flash('success', 'Your space at ' + req.body.address + ' has been created');
+				 // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'getspace2216@gmail.com', // generated ethereal user
+        pass: 'blake150'  // generated ethereal password
+    },
+    tls:{
+      rejectUnauthorized:false
+    }
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+      from: 'getspace2216@gmail.com', // sender address
+      to: user.email, // list of receivers
+      subject: 'Listing at GetSpace', // Subject line
+      text: 'Hello world?', // plain text body
+      html: '<p> Your listing has been uploaded, thanks for using GetSpace. </p>' // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message sent: %s', info.messageId);   
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        });
 				res.redirect('/profile');
 			})
 	})
@@ -80,6 +114,38 @@ module.exports = function(app, passport) {
 					user.addReservation(res);
 				}).then(function() {
 					req.flash('success', 'Your reservation has been created');
+					let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'getspace2216@gmail.com', // generated ethereal user
+        pass: 'blake150'  // generated ethereal password
+    },
+    tls:{
+      rejectUnauthorized:false
+    }
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+      from: 'getspace2216@gmail.com', // sender address
+      to: user.email,
+      cc: data.ownerEmail, // list of receivers
+      subject: 'Renting at GetSpace', // Subject line
+      text: 'Hello world?', // plain text body
+      html: '<p> Owner has been copied on this email, thanks for using GetSpace. </p>' // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message sent: %s', info.messageId);   
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        });
 					res.redirect('/profile');
 				})
 			})

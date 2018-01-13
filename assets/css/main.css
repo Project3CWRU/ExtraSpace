@@ -59,17 +59,26 @@
           color: black;
      }
 
+    #navLogo {
+    float: left;
+    }
+
      a#linkNav, .navButton#linkOne,  .navButton#linkTwo, .navButton#linkThree, .navButton#linkFour, .navButton#linkFive  {
           color:white;
+          font-size: 18px;
+          padding-top: 32px;
+
      }
 
-     a#linkNav:hover, .navButton#linkOne:hover,  .navButton#linkTwo:hover, .navButton#linkThree:hover, .navButton#linkFour:hover, .navButton#linkFive:hover  {
+     a#navLogo:hover, .navButton#linkOne:hover,  .navButton#linkTwo:hover, .navButton#linkThree:hover, .navButton#linkFour:hover, .navButton#linkFive:hover  {
           background-color:white;
+          font-size: 18px;
           color: black;
      }
 
      a.landingButtons {
           color: white;
+          font-size: 25px;
           background-color: white;
      }
 
@@ -124,7 +133,7 @@
      }
 
      .containerTopProfile {
-          margin-top: 20px;
+          margin-top: 40px;
           margin-bottom: 20px;
      }
 
@@ -252,7 +261,7 @@
 
      /* ========================== Profile Page */
      .alert {
-      margin-top: 55px;
+      margin-top: 80px;
       margin-bottom: 0;
      }
 
