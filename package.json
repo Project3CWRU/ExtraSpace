@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sibi1414/getspace.git"
+    "url": "git+https://github.com/Project3CWRU/getspace.git"
   },
   "bugs": {
-    "url": "https://github.com/sibi1414/getspace/issues"
+    "url": "https://github.com/Project3CWRU/getspace/issues"
   },
-  "homepage": "https://github.com/sibi1414/getspace#readme",
+  "homepage": "https://github.com/Project3CWRU/getspace#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
